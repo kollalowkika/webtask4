@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ApexPlanet — Portfolio · Tasks · Products</title>
+  <style>
+    /* Reset & base */
+    :root{
+      --bg:#f6fbf9; --card:#ffffff; --muted:#6b7a78; --accent:#0b6b63; --accent-2:#1d9d88;
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 6px 18px rgba(11,107,99,0.08);
+      --glass-2: rgba(13,70,63,0.04);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:linear-gradient(180deg,var(--bg),#eef7f5); color:#0f2b29; -webkit-font-smoothing:antialiased;
+      padding:28px; display:flex; justify-content:center;
+    }
+
+    /* App shell */
+    .app{
+      width:1100px; max-width:96vw; background:var(--card); border-radius:16px; box-shadow:var(--shadow); overflow:hidden;
+      display:grid; grid-template-columns:280px 1fr; min-height:640px;
+    }
+
+    /* Sidebar */
+    .sidebar{background:linear-gradient(180deg,var(--accent),var(--accent-2)); color:#fff; padding:28px; display:flex; flex-direction:column; gap:20px}
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{width:56px; height:56px; border-radius:12px; background:rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; font-weight:700}
+    .brand h1{font-size:18px;margin:0}
+    .brand p{margin:0;font-size:12px; opacity:0.9}
+    nav{display:flex; flex-direction:column; gap:10px; margin-top:6px}
+    .nav-btn{background:transparent;border:0;color:rgba(255,255,255,0.92); text-align:left;padding:10px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+    .nav-btn.active, .nav-btn:hover{background:rgba(255,255,255,0.08)}
+
+    .profile{margin-top:auto; font-size:13px; opacity:0.95}
+
+    /* Main area */
+    .main{padding:28px; display:flex; flex-direction:column; gap:16px}
+    .topbar{display:flex; justify-content:space-between; align-items:center}
+    .title{font-size:22px; font-weight:800; color:var(--accent)}
+    .subtitle{color:var(--muted); font-size:13px}
+
+    .content{display:grid; grid-template-columns:1fr; gap:18px}
+
+    /* cards */
+    .card{background:linear-gradient(180deg,var(--glass),rgba(255,255,255,0.8)); border-radius:12px; padding:18px; box-shadow:var(--glass-2) 0px 2px 0px inset}
+
+    /* Portfolio */
+    .portfolio-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px}
+    .project{border-radius:10px; overflow:hidden; background:linear-gradient(180deg,#fff,#f8fffb); border:1px solid rgba(9,50,47,0.03); padding:12px}
+    .project h3{margin:0 0 6px 0; font-size:15px; color:#043532}
+    .project p{margin:0; color:var(--muted); font-size:13px}
+    .project .tags{display:flex; gap:6px; margin-top:8px; flex-wrap:wrap}
+    .tag{font-size:11px;background:rgba(1,80,72,0.06); padding:6px 8px;border-radius:999px}
+
+    /* Todo */
+    .todo-frm{display:flex; gap:10px}
+    .todo-frm input{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(8,60,55,0.08)}
+    .btn{background:var(--accent); color:#fff;border:0;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:700}
+    .todo-list{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .todo-item{display:flex; gap:12px; align-items:center; padding:10px; border-radius:10px; border:1px solid rgba(8,60,55,0.04); background:#fff}
+    .todo-item.completed{opacity:0.55; text-decoration:line-through}
+    .todo-item .info{flex:1}
+    .small-muted{font-size:12px;color:var(--muted)}
+
+    /* products */
+    .controls{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .controls input, .controls select{padding:8px 10px;border-radius:8px;border:1px solid rgba(7,40,37,0.06); min-width:160px}
+    .product-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px}
+    .product{background:linear-gradient(180deg,#fff,#fbfffc); border-radius:10px; padding:12px; border:1px solid rgba(7,40,37,0.03)}
+    .product img{width:100%; height:120px; object-fit:cover; border-radius:8px}
+    .product h4{margin:8px 0 6px 0}
+    .rating{font-weight:700; color:var(--accent)}
+
+    /* responsive */
+    @media(max-width:880px){ .app{grid-template-columns:1fr} .sidebar{flex-direction:row; align-items:center; padding:12px; gap:8px} nav{flex-direction:row; gap:6px} .profile{display:none} }
+
+    /* micro-interactions */
+    .btn-ghost{background:transparent;border:1px solid rgba(7,40,37,0.06); padding:8px 10px;border-radius:8px;cursor:pointer}
+    .chip{display:inline-block;padding:6px 8px;border-radius:999px;border:1px solid rgba(7,40,37,0.04); font-size:12px}
+
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">AP</div>
+        <div>
+          <h1>ApexPlanet</h1>
+          <p>Software Pvt Ltd</p>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-btn active" data-view="portfolio">Portfolio</button>
+        <button class="nav-btn" data-view="todo">To-Do / Notes</button>
+        <button class="nav-btn" data-view="products">Products</button>
+      </nav>
+
+      <div class="profile small-muted">
+        Timeline: 9 Days · Task 4
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <div class="title">Full Project Implementation</div>
+          <div class="subtitle">Combined single-file demo: Portfolio · Persistent To-Do · Product listing with filters</div>
+        </div>
+        <div class="chip">Unique combined demo • Clean & responsive</div>
+      </div>
+
+      <div class="content">
+        <!-- PORTFOLIO -->
+        <section id="portfolio" class="card view">
+          <h2 style="margin-top:0">Personal Portfolio</h2>
+          <p class="small-muted">Showcasing a few projects and a compact about section.</p>
+          <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;align-items:center">
+            <div style="flex:1; min-width:260px">
+              <div class="card" style="padding:12px">
+                <h3 style="margin:0">About Me</h3>
+                <p class="small-muted">Front-end developer focused on clean interfaces, UX and small interactive web apps.</p>
+                <p style="margin-top:8px">Skills: HTML · CSS · JavaScript · Accessibility · LocalStorage · Responsive Design</p>
+                <div style="margin-top:8px;display:flex;gap:8px">
+                  <a class="btn-ghost" href="#" onclick="alert('This demo is offline — just a placeholder')">Download CV</a>
+                  <a class="btn" href="#" onclick="switchView('products')">View Products</a>
+                </div>
+              </div>
+            </div>
+
+            <div style="flex:2; min-width:320px">
+              <div class="portfolio-grid">
+                <!-- projects inserted by JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TODO -->
+        <section id="todo" class="card view" style="display:none">
+          <h2 style="margin-top:0">To-Do / Notes (Persistent)</h2>
+          <p class="small-muted">Create tasks or quick notes. Items are saved in localStorage automatically.</p>
+
+          <form id="todoForm" class="todo-frm" onsubmit="return false">
+            <input id="todoInput" placeholder="Add a task or note e.g. 'Design hero section'" />
+            <button id="addTodo" class="btn">Add</button>
+          </form>
+
+          <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
+            <div style="flex:1">
+              <input id="searchTodo" placeholder="Search tasks..." />
+            </div>
+            <div>
+              <button id="clearDone" class="btn-ghost">Clear completed</button>
+            </div>
+          </div>
+
+          <div id="todoList" class="todo-list"></div>
+        </section>
+
+        <!-- PRODUCTS -->
+        <section id="products" class="card view" style="display:none">
+          <h2 style="margin-top:0">Product Listing</h2>
+          <p class="small-muted">Filter, search, sort and rate items. Built-in sample catalog — try adding your own products.</p>
+
+          <div class="controls">
+            <input id="productSearch" placeholder="Search products by name or tag" />
+            <select id="categoryFilter"><option value="all">All categories</option></select>
+            <select id="sortBy"><option value="best">Sort: Best match</option><option value="price-asc">Price ↑</option><option value="price-desc">Price ↓</option><option value="rating-desc">Rating ↓</option></select>
+            <button id="resetFilters" class="btn-ghost">Reset</button>
+            <div style="margin-left:auto;display:flex;gap:8px">
+              <button id="addSample" class="btn-ghost">Add sample product</button>
+              <button id="openAddModal" class="btn">Add product</button>
+            </div>
+          </div>
+
+          <div style="margin-top:12px" class="product-grid" id="productGrid"></div>
+        </section>
+
+      </div>
+
+      <footer style="text-align:center; color:var(--muted); font-size:13px">© ApexPlanet — demo combined project</footer>
+    </main>
+  </div>
+
+  <!-- Simple product modal (DOM inserted) -->
+
+  <script>
+    /*******************
+     * Lightweight App State
+     *******************/
+    const state = {
+      projects: [
+        {id:'p1',title:'Portfolio Website',desc:'Multi-page responsive portfolio with contact form and accessible components',tags:['HTML','CSS','JS']},
+        {id:'p2',title:'LocalStorage To-Do',desc:'Persistent to-do and notes app with search and completion',tags:['localStorage','UX']},
+        {id:'p3',title:'Product Listing',desc:'Interactive product grid with filtering, sorting and rating',tags:['Filtering','Sorting','UI']}
+      ],
+      todos: [],
+      products: [],
+    }
+
+    /*******************
+     * Utilities
+     *******************/
+    function el(q,ctx=document){return ctx.querySelector(q)}
+    function els(q,ctx=document){return Array.from(ctx.querySelectorAll(q))}
+    function uid(prefix='id'){return prefix+Math.random().toString(36).slice(2,9)}
+
+    /*******************
+     * View switching
+     *******************/
+    els('.nav-btn').forEach(b=>b.addEventListener('click',e=>{els('.nav-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active'); switchView(b.dataset.view)}))
+    function switchView(view){ els('.view').forEach(s=>s.style.display='none'); const sec = el('#'+view); if(sec) sec.style.display='block'; window.scrollTo({top:0,behavior:'smooth'}) }
+
+    /*******************
+     * PORTFOLIO - render projects
+     *******************/
+    function renderPortfolio(){
+      const grid = el('.portfolio-grid'); grid.innerHTML='';
+      state.projects.forEach(p=>{
+        const div = document.createElement('div'); div.className='project';
+        div.innerHTML = `<h3>${escapeHTML(p.title)}</h3><p>${escapeHTML(p.desc)}</p><div class="tags">${p.tags.map(t=>`<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>`;
+        grid.appendChild(div);
+      })
+    }
+
+    function escapeHTML(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;" })[c]) }
+
+    /*******************
+     * TODOs - persistent
+     *******************/
+    const TODO_KEY = 'apx_todos_v1';
+    function loadTodos(){ try{ const raw = localStorage.getItem(TODO_KEY); state.todos = raw ? JSON.parse(raw) : []; }catch(e){state.todos=[]} }
+    function saveTodos(){ localStorage.setItem(TODO_KEY, JSON.stringify(state.todos)); }
+
+    function renderTodos(filterText=''){
+      const container = el('#todoList'); container.innerHTML='';
+      const list = state.todos.filter(t=> t.text.toLowerCase().includes(filterText.toLowerCase()));
+      if(list.length===0){ container.innerHTML='<div class="small-muted">No tasks yet — try adding one above.</div>'; return }
+      list.forEach(t=>{
+        const it = document.createElement('div'); it.className='todo-item'+(t.done ? ' completed' : '');
+        it.innerHTML = `<input type="checkbox" ${t.done? 'checked':''} onchange="toggleTodo('${t.id}',this.checked)" />
+          <div class="info"><div style="font-weight:700">${escapeHTML(t.text)}</div><div class="small-muted">${t.createdAt}</div></div>
+          <div style="display:flex;gap:8px"><button class="btn-ghost" onclick="editTodo('${t.id}')">Edit</button><button class="btn-ghost" onclick="deleteTodo('${t.id}')">Delete</button></div>`;
+        container.appendChild(it);
+      })
+    }
+
+    function addTodo(text){ if(!text.trim()) return; const item={id:uid('t'), text:text.trim(), done:false, createdAt:new Date().toLocaleString()}; state.todos.unshift(item); saveTodos(); renderTodos(el('#searchTodo').value) }
+    function toggleTodo(id,done){ const it = state.todos.find(x=>x.id===id); if(!it) return; it.done=done; saveTodos(); renderTodos(el('#searchTodo').value) }
+    function editTodo(id){ const it = state.todos.find(x=>x.id===id); if(!it) return; const val = prompt('Edit task',it.text); if(val!==null){ it.text=val.trim(); saveTodos(); renderTodos(el('#searchTodo').value) }}
+    function deleteTodo(id){ state.todos = state.todos.filter(x=>x.id!==id); saveTodos(); renderTodos(el('#searchTodo').value) }
+    function clearCompleted(){ state.todos = state.todos.filter(x=>!x.done); saveTodos(); renderTodos(el('#searchTodo').value) }
+
+    // wire todo form
+    el('#addTodo').addEventListener('click',()=>{ addTodo(el('#todoInput').value); el('#todoInput').value=''; el('#todoInput').focus(); })
+    el('#todoInput').addEventListener('keypress',e=>{ if(e.key==='Enter'){ addTodo(el('#todoInput').value); el('#todoInput').value=''; } })
+    el('#searchTodo').addEventListener('input',e=>{ renderTodos(e.target.value) })
+    el('#clearDone').addEventListener('click', ()=>{ clearCompleted() })
+
+    /*******************
+     * Products
+     *******************/
+    const PROD_KEY = 'apx_products_v1';
+    function loadProducts(){ try{ const raw=localStorage.getItem(PROD_KEY); state.products = raw? JSON.parse(raw): sampleProducts(); }catch(e){ state.products = sampleProducts() } }
+    function saveProducts(){ localStorage.setItem(PROD_KEY, JSON.stringify(state.products)); }
+
+    function sampleProducts(){ return [
+      {id:uid('pr'),name:'Aqua Bottle',price:12.5,category:'home',rating:4.5,tags:['bottle','eco'],img:'https://picsum.photos/seed/bottle/400/300'},
+      {id:uid('pr'),name:'Desk Lamp Pro',price:45.0,category:'gadgets',rating:4.8,tags:['lamp','design'],img:'https://picsum.photos/seed/lamp/400/300'},
+      {id:uid('pr'),name:'Organic Notebook',price:6.5,category:'stationery',rating:4.1,tags:['paper','eco'],img:'https://picsum.photos/seed/notebook/400/300'},
+    ] }
+
+    function renderProducts(){
+      const grid = el('#productGrid'); grid.innerHTML='';
+      const search = el('#productSearch').value.trim().toLowerCase();
+      const cat = el('#categoryFilter').value;
+      const sort = el('#sortBy').value;
+
+      let list = state.products.slice();
+      if(cat !== 'all') list = list.filter(p=>p.category===cat);
+      if(search) list = list.filter(p=> (p.name+ ' '+ (p.tags||[]).join(' ')).toLowerCase().includes(search));
+
+      // sorting
+      if(sort==='price-asc') list.sort((a,b)=>a.price-b.price)
+      else if(sort==='price-desc') list.sort((a,b)=>b.price-a.price)
+      else if(sort==='rating-desc') list.sort((a,b)=>b.rating-b.rating)
+
+      if(list.length===0){ grid.innerHTML='<div class="small-muted">No matching products. Try resetting filters or add a new product.</div>'; return }
+
+      list.forEach(p=>{
+        const card = document.createElement('div'); card.className='product';
+        card.innerHTML = `<img alt="${escapeHTML(p.name)}" src="${p.img}" />
+          <h4>${escapeHTML(p.name)}</h4>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700">$${p.price.toFixed(2)}</div>
+            <div class="rating">${'★'.repeat(Math.round(p.rating))} <span style="font-weight:500;color:var(--muted);">${p.rating.toFixed(1)}</span></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+            <div class="small-muted">${escapeHTML(p.category)}</div>
+            <div style="margin-left:auto;display:flex;gap:6px">
+              <button class="btn-ghost" onclick="rateProduct('${p.id}')">Rate</button>
+              <button class="btn-ghost" onclick="deleteProduct('${p.id}')">Remove</button>
+            </div>
+          </div>`;
+        grid.appendChild(card);
+      })
+    }
+
+    function populateCategories(){ const set = new Set(state.products.map(p=>p.category)); const sel = el('#categoryFilter'); sel.innerHTML = '<option value="all">All categories</option>'; set.forEach(c=>{ const opt = document.createElement('option'); opt.value=c; opt.textContent=c; sel.appendChild(opt) }) }
+
+    // product actions
+    function addSampleProduct(){ const p = { id:uid('pr'), name:'New Item '+(state.products.length+1), price:Math.round((Math.random()*80+5)*100)/100, category:['gadgets','home','stationery'][Math.floor(Math.random()*3)], rating:(Math.random()*1.8+3.2), tags:['sample'], img:'https://picsum.photos/seed/'+Math.random().toString(36).slice(2,6)+'/400/300'}; state.products.unshift(p); saveProducts(); populateCategories(); renderProducts(); }
+    function openAddProductModal(){ const name = prompt('Product name'); if(!name) return; const price = parseFloat(prompt('Price (number)','9.99')); if(Number.isNaN(price)) return alert('Invalid price'); const category = prompt('Category','misc'); const img = prompt('Image URL (or leave empty for placeholder)') || ('https://picsum.photos/seed/'+Math.random().toString(36).slice(2,6)+'/400/300'); const prod = {id:uid('pr'), name:name.trim(), price, category:category.trim(), rating:4.0, tags:[], img}; state.products.unshift(prod); saveProducts(); populateCategories(); renderProducts(); }
+    function deleteProduct(id){ if(!confirm('Remove product?')) return; state.products = state.products.filter(p=>p.id!==id); saveProducts(); populateCategories(); renderProducts(); }
+    function rateProduct(id){ const p = state.products.find(x=>x.id===id); if(!p) return; const r = parseFloat(prompt('Rate 1.0 - 5.0', p.rating.toFixed(1))); if(Number.isNaN(r) || r<1 || r>5) return alert('Invalid rating'); p.rating = Math.round(r*10)/10; saveProducts(); renderProducts(); }
+
+    // wiring controls
+    el('#productSearch').addEventListener('input',()=>renderProducts())
+    el('#sortBy').addEventListener('change',()=>renderProducts())
+    el('#resetFilters').addEventListener('click',()=>{ el('#productSearch').value=''; el('#categoryFilter').value='all'; el('#sortBy').value='best'; renderProducts(); })
+    el('#addSample').addEventListener('click',()=>addSampleProduct())
+    el('#openAddModal').addEventListener('click',()=>openAddProductModal())
+    el('#categoryFilter').addEventListener('change',()=>renderProducts())
+
+    /*******************
+     * Boot
+     *******************/
+    function boot(){ loadTodos(); loadProducts(); renderPortfolio(); renderTodos(); populateCategories(); renderProducts(); }
+    boot();
+
+    // expose a couple of functions to global scope used from HTML strings
+    window.switchView = switchView; window.toggleTodo = toggleTodo; window.editTodo = editTodo; window.deleteTodo = deleteTodo; window.rateProduct = rateProduct; window.deleteProduct = deleteProduct; window.addSampleProduct = addSampleProduct; window.openAddModal = openAddProductModal;
+
+  </script>
+</body>
+</html>
